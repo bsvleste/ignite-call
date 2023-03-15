@@ -47,6 +47,7 @@ export default function Register() {
         name,
         username,
       })
+      await router.push('/register/connect-calendar')
     } catch (error) {
       if (error?.response?.data?.message) {
         alert(`${username} ja esta em uso, utilize outro username `)
@@ -63,8 +64,8 @@ export default function Register() {
           Precisamos de algumas informações para criar seu perfil! Ah, você pode
           editar essas informações depois.
         </Text>
+        <MultiStep size={4} currentStep={1} />
       </Header>
-      <MultiStep size={4} currentStep={1} />
       <Form as="form" onSubmit={handleSubmit(handleRegister)}>
         <label>
           <Text size="sm">Nome de usuario</Text>
