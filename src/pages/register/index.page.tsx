@@ -48,6 +48,10 @@ export default function Register() {
         username,
       })
     } catch (error) {
+      if (error?.response?.data?.message) {
+        alert(`${username} ja esta em uso, utilize outro username `)
+        return
+      }
       console.log(error)
     }
   }
