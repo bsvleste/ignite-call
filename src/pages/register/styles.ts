@@ -27,5 +27,5 @@ export const Form = styled(Box, {
   },
 })
 export const FormError = styled(Text, {
-  color: 'rgb(255,0,0)',
+  color: '#f75a68',
 })
