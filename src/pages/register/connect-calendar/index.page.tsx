@@ -6,7 +6,7 @@ import { ConnectBox, ConnectionItem } from './styles'
 
 export default function Register() {
   /*   async function handleRegister() { } */
-  const session = useSession()
+  // const session = useSession()
   return (
     <RegisterContainer>
       <Header>
