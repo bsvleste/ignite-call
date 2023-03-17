@@ -1,10 +1,12 @@
 import { Button, Heading, MultiStep, Text } from '@ignite-ui/react'
+import { signIn, useSession } from 'next-auth/react'
 import { ArrowRight } from 'phosphor-react'
 import { Header, RegisterContainer } from '../styles'
 import { ConnectBox, ConnectionItem } from './styles'
 
 export default function Register() {
   /*   async function handleRegister() { } */
+  const session = useSession()
   return (
     <RegisterContainer>
       <Header>
@@ -18,11 +20,16 @@ export default function Register() {
       <ConnectBox>
         <ConnectionItem>
           <Text>Google Calendar</Text>
-          <Button variant="secondary" size="sm">
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => signIn('google')}
+          >
             Conectar
             <ArrowRight />
           </Button>
         </ConnectionItem>
+
         <Button type="submit">
           Próximo Passo
           <ArrowRight />
