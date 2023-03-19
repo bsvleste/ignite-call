@@ -18,10 +18,7 @@ const registerFormSchema = z.object({
     .transform((username) => username.toLocaleLowerCase()),
   name: z
     .string()
-    .min(3, { message: 'O nome precisa ter pelo menos 3 letras' })
-    .regex(/^([a-z\\-]+)$/i, {
-      message: 'O usuario pode ter apenas letras e hifens',
-    }),
+    .min(3, { message: 'O nome precisa ter pelo menos 3 letras' }),
 })
 
 type RegisterFormData = z.infer<typeof registerFormSchema>
