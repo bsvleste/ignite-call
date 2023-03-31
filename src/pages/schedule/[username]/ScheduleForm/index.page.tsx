@@ -1,11 +1,10 @@
-import CalendarStep from "./CalendarStep/index.page";
-import ConfirmStep from "./ConfirmStep/idnex.page";
+import CalendarStep from './CalendarStep'
+// import ConfirmStep from './ConfirmStep'
 
 export default function ScheduleForm() {
-    return (
-        <>
-            <CalendarStep />
-            <ConfirmStep />
-        </>
-    )
+  return (
+    <>
+      <CalendarStep />
+    </>
+  )
 }

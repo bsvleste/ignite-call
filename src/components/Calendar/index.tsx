@@ -1,47 +1,74 @@
-import { CaretLeft, CaretRight } from "phosphor-react";
-import { getWeekDays } from "../../utils/get-week-days";
-import { CalendarActions, CalendarBody, CalendarContainer, CalendarDay, CalendarHeader, CalendarTitle } from "./styles";
+import dayjs from 'dayjs'
+import { CaretLeft, CaretRight } from 'phosphor-react'
+import { useState } from 'react'
+import { getWeekDays } from '../../utils/get-week-days'
+import {
+  CalendarActions,
+  CalendarBody,
+  CalendarContainer,
+  CalendarDay,
+  CalendarHeader,
+  CalendarTitle,
+} from './styles'
 
 export default function Calendar() {
-    const shortWeekdays = getWeekDays({ short: true })
-    return (
-        <CalendarContainer>
-            <CalendarHeader>
-                <CalendarTitle>
-                    Março <span>2023</span>
-                </CalendarTitle>
-                <CalendarActions>
-                    <button>
-                        <CaretLeft />
-                    </button>
-                    <button>
-                        <CaretRight />
-                    </button>
-                </CalendarActions>
-            </CalendarHeader>
-            <CalendarBody >
-                <thead>
-                    <tr>
-                        {
-                            shortWeekdays.map(weekDay => (
-                                <th key={weekDay}>{weekDay}.</th>
-                            ))
-                        }
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><CalendarDay>1</CalendarDay></td>
-                        <td><CalendarDay disabled>2</CalendarDay></td>
-                        <td><CalendarDay>3</CalendarDay></td>
-                        <td><CalendarDay>4</CalendarDay></td>
-
-                    </tr>
-                </tbody>
-            </CalendarBody>
-        </CalendarContainer>
-    )
+  const [currentDate, setCurrentDate] = useState(() => {
+    return dayjs().set('date', 1)
+  })
+  const currentMonth = currentDate.format('MMMM')
+  const currentYear = currentDate.format('YYYY')
+  function handlePreviewsMonth() {
+    const previousMonthDate = currentDate.subtract(1, 'month')
+    setCurrentDate(previousMonthDate)
+  }
+  function handleNextMonth() {
+    const nextMonthDate = currentDate.add(1, 'month')
+    setCurrentDate(nextMonthDate)
+  }
+  const shortWeekdays = getWeekDays({ short: true })
+  return (
+    <CalendarContainer>
+      <CalendarHeader>
+        <CalendarTitle>
+          {currentMonth} <span>{currentYear}</span>
+        </CalendarTitle>
+        <CalendarActions>
+          <button onClick={handlePreviewsMonth} title="Previous Month">
+            <CaretLeft />
+          </button>
+          <button onClick={handleNextMonth} title="Next Month">
+            <CaretRight />
+          </button>
+        </CalendarActions>
+      </CalendarHeader>
+      <CalendarBody>
+        <thead>
+          <tr>
+            {shortWeekdays.map((weekDay) => (
+              <th key={weekDay}>{weekDay}.</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+              <CalendarDay>1</CalendarDay>
+            </td>
+            <td>
+              <CalendarDay>2</CalendarDay>
+            </td>
+            <td>
+              <CalendarDay>3</CalendarDay>
+            </td>
+            <td>
+              <CalendarDay>4</CalendarDay>
+            </td>
+          </tr>
+        </tbody>
+      </CalendarBody>
+    </CalendarContainer>
+  )
 }
