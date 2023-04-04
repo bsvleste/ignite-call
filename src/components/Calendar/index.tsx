@@ -10,6 +10,9 @@ import {
   CalendarHeader,
   CalendarTitle,
 } from './styles'
+import { useQuery } from '@tanstack/react-query'
+import { useRouter } from 'next/router'
+import { api } from '../../lib/axios'
 
 interface CalendarWeek {
   week: number
@@ -18,10 +21,13 @@ interface CalendarWeek {
     disabled: boolean
   }>
 }
-
+interface BlockedDates {
+  blockedWeekDays: number[]
+}
 type CalendarWeeks = CalendarWeek[]
 interface CalendarProps {
   selectedDate: Date | null
+
   onDateselected: (date: Date) => void
 }
 export default function Calendar({
@@ -33,7 +39,24 @@ export default function Calendar({
   })
   const currentMonth = currentDate.format('MMMM')
   const currentYear = currentDate.format('YYYY')
+  const router = useRouter()
+  const username = String(router.query.username)
+  const { data: blockedDates } = useQuery<BlockedDates>(
+    ['blocked-dates', currentDate.get('year'), currentDate.get('month')],
+    async () => {
+      const response = await api.get(`/users/${username}/blocked-dates`, {
+        params: {
+          year: currentDate.get('year'),
+          month: currentDate.get('month'),
+        },
+      })
+      return response.data
+    },
+  )
   const calendarWeeks = useMemo(() => {
+    if (!blockedDates) {
+      return []
+    }
     const daysInMonthArray = Array.from({
       length: currentDate.daysInMonth(),
     }).map((_, i) => {
@@ -64,7 +87,12 @@ export default function Calendar({
         return { date, disabled: true }
       }),
       ...daysInMonthArray.map((date) => {
-        return { date, disabled: date.endOf('day').isBefore(new Date()) }
+        return {
+          date,
+          disabled:
+            date.endOf('day').isBefore(new Date()) ||
+            blockedDates.blockedWeekDays.includes(date.get('day')),
+        }
       }),
       ...nextMonthFillArray.map((date) => {
         return { date, disabled: true }
@@ -84,7 +112,7 @@ export default function Calendar({
       [],
     )
     return calendarWeeks
-  }, [currentDate])
+  }, [currentDate, blockedDates])
 
   console.log(calendarWeeks)
 
