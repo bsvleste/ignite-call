@@ -1,4 +1,4 @@
-import { Box, styled } from '@ignite-ui/react'
+import { styled } from '@ignite-ui/react'
 
 export const CalendarContainer = styled('div', {
   display: 'flex',
