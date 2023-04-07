@@ -29,7 +29,7 @@ export async function getGoogleOuthToken(userId: string) {
       expiry_date,
       id_token,
       refresh_token,
-      scoppe,
+      scope,
       token_type,
     } = credentials
     await prisma.account.update({
@@ -41,7 +41,7 @@ export async function getGoogleOuthToken(userId: string) {
         expires_at: expiry_date ? Math.floor(expiry_date / 1000) : null,
         id_token,
         refresh_token,
-        scoppe,
+        scope,
         token_type,
       },
     })
